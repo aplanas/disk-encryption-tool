@@ -42,7 +42,7 @@ if [ -n "$tpm2_pin" ]; then
 	echo "Enrolling TPM2 with PIN"
 	SDB_ADD_INITIAL_COMPONENT=1 PIN="$crypt_tpm_pin" sdbootutil enroll --method=tpm2+pin
 elif [ -n "$tpm2" ]; then
-	echo "Enrolling TPM2"
+	echo "Enrolling TPM2" > /dev/ttyS0
 	SDB_ADD_INITIAL_COMPONENT=1 sdbootutil enroll --method=tpm2
 fi
 
