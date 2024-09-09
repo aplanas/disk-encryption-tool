@@ -167,6 +167,8 @@ while true ; do
         esac
 done
 
+ls -la /dev/mapper
+
 [ -z "$1" ] && [ -e /etc/initrd-release ] && set -- /sysroot cr_root
 
 { [ -n "$1" ] && [ -n "$2" ]; } || helpandquit
@@ -241,7 +243,8 @@ fi
 
 
 if [ -n "$gen_key" ]; then
-	read -r password < <(generate-recovery-key)
+	#read -r password < <(generate-recovery-key)
+	password="linux"
 	if [ -e /etc/initrd-release ]; then
 		# When multiple partitions are being encrypted we want
 		# to generete the key only once for the first one, and
@@ -297,5 +300,9 @@ else
 fi
 
 make_ro "$root_mp"
+
+umount -R "$mp"
+mount
+ls -la /dev/mapper
 
 echo "Image encryption completed"

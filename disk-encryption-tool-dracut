@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -x
 exec < /dev/console >/dev/console 2>&1
 type getarg > /dev/null 2>&1 || . /lib/dracut-lib.sh
 
@@ -59,12 +60,12 @@ if [ "$inhibitor" != $'\e' ]; then
 			read -r cr_name device <<<"$line"
 			[ "$device" = "$root_device" ] && root_cr_name="$cr_name" && continue
 			echo "Encrypt $device"
-			/usr/bin/disk-encryption-tool -v --gen-key --root /sysroot "$device" "$cr_name"|| die "Encryption failed"
+			bash -x /usr/bin/disk-encryption-tool -v --gen-key --root /sysroot "$device" "$cr_name"|| die "Encryption failed"
 		done
 	fi
 	if [ "$root_cr_root" != "skip" ]; then
 		echo "Encrypt /sysroot"
-		/usr/bin/disk-encryption-tool -v --gen-key "/sysroot" "$root_cr_name" || die "Encryption failed"
+		bash -x /usr/bin/disk-encryption-tool -v --gen-key "/sysroot" "$root_cr_name" || die "Encryption failed"
 	fi
 fi
 # turn messages on again
